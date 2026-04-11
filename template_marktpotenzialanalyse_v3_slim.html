@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marktpotenzialanalyse – [KUNDENNAME]</title>
+<style>
+  :root {
+    --blue: #2C75FF;
+    --blue-pale: #EEF4FF;
+    --black: #000000;
+    --gray-dark: #1A1A1A;
+    --gray-mid: #6B6B6B;
+    --gray-light: #F7F4F6;
+    --white: #FFFFFF;
+    --border: #E2E8F0;
+    --positive: #1E8F5C;
+    --negative: #C93B3B;
+    --warn-bg: #FFFBEA;
+    --warn-border: #E6A817;
+    --warn-text: #7A5A00;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; background:#EEEAED; color:var(--black); font-size:15px; line-height:1.6; }
+  .page { width:900px; margin:0 auto; }
+  .section { background:var(--white); margin-bottom:3px; overflow:hidden; }
+
+  /* COVER */
+  .cover { background:linear-gradient(135deg,#2C75FF 0%,#2E97FF 100%); min-height:540px; display:flex; flex-direction:column; justify-content:space-between; padding:52px 64px 48px; position:relative; overflow:hidden; }
+  .cover-logo { position:relative; z-index:2; line-height:0; font-size:0; }
+  .cover-logo img { height:30px; display:block; }
+  .cover-body { position:relative; z-index:2; }
+  .cover-label { font-size:11px; font-weight:500; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,0.55); margin-bottom:22px; }
+  .cover-title { font-size:52px; font-weight:800; color:#fff; line-height:1.0; letter-spacing:-2px; margin-bottom:10px; }
+  .cover-subtitle { font-size:22px; font-weight:400; color:rgba(255,255,255,0.65); }
+  .cover-meta { display:flex; gap:48px; position:relative; z-index:2; padding-top:28px; }
+  .cover-meta-item { display:flex; flex-direction:column; gap:4px; }
+  .cover-meta-label { font-size:9px; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; color:rgba(255,255,255,0.4); }
+  .cover-meta-value { font-size:14px; font-weight:600; color:rgba(255,255,255,0.92); }
+
+  /* SECTION */
+  .section-header { padding:40px 64px 28px; border-bottom:none; }
+  .section-number { font-size:10px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--blue); margin-bottom:10px; }
+  .section-title { font-size:32px; font-weight:800; color:var(--black); letter-spacing:2px; text-transform:uppercase; line-height:1.05; }
+  .section-title span { color:var(--blue); }
+  .section-divider { height: 1px; background: var(--border); margin-top: 20px; }
+  .section-body { padding:40px 64px; }
+  .intro-text { font-size:15px; color:var(--gray-mid); max-width:620px; line-height:1.7; margin-bottom:32px; }
+  .subsection-title { font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--black); margin-bottom:16px; margin-top:36px; padding-bottom:8px; border-bottom:2px solid var(--black); }
+  .subsection-title:first-child { margin-top:0; }
+
+  /* STATS */
+  .stats-row { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:24px; }
+  .stat-card { background:var(--gray-light); border:1px solid var(--border); border-top:3px solid var(--blue); padding:24px 20px 20px; }
+  .stat-value { font-size:34px; font-weight:900; color:var(--black); letter-spacing:-1.5px; line-height:1; margin-bottom:8px; }
+  .stat-label { font-size:12px; font-weight:500; color:var(--gray-mid); line-height:1.4; }
+  .stat-sub { font-size:11px; color:var(--blue); font-weight:600; margin-top:6px; }
+
+  /* INFO TABLE */
+  .info-table { width:100%; border-collapse:collapse; margin-bottom:8px; }
+  .info-table tr { border-bottom:1px solid var(--border); }
+  .info-table tr:last-child { border-bottom:none; }
+  .info-table td { padding:13px 0; font-size:14px; }
+  .info-table td:first-child { color:var(--gray-mid); font-size:11px; font-weight:600; letter-spacing:1px; width:220px; text-transform:uppercase; }
+
+  /* SCORING */
+  .scoring-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:32px; }
+  .score-item { background:var(--gray-light); border:1px solid var(--border); padding:18px 20px; }
+  .score-item-top { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:10px; }
+  .score-row-label { font-size:13px; font-weight:600; color:var(--gray-dark); flex:1; }
+  .score-right { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+  .score-bar-wrap { width:90px; height:3px; background:var(--border); border-radius:2px; }
+  .score-bar { height:100%; background:var(--blue); border-radius:2px; }
+  .score-badge { font-size:17px; font-weight:800; color:var(--blue); min-width:34px; text-align:right; }
+  .score-note { font-size:12px; color:var(--gray-mid); line-height:1.5; }
+
+  /* TOTAL SCORE */
+  .total-score-bar { background:var(--black); padding:28px 40px; display:flex; align-items:center; justify-content:space-between; margin-bottom:32px; gap:24px; }
+  .total-score-label { font-size:10px; font-weight:600; color:rgba(255,255,255,0.5); letter-spacing:2.5px; text-transform:uppercase; }
+  .total-score-value { font-size:52px; font-weight:900; color:#fff; letter-spacing:-3px; line-height:1; }
+  .total-score-value span { font-size:22px; font-weight:400; opacity:0.4; }
+  .total-score-desc { font-size:13px; color:rgba(255,255,255,0.65); max-width:300px; text-align:right; line-height:1.6; }
+
+  /* PROS CONS */
+  .pros-cons-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:8px; }
+  .pros-cons-box { border:1px solid var(--border); overflow:hidden; }
+  .pros-cons-header { padding:13px 20px; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; }
+  .pros-cons-header.positive { background:rgba(30,143,92,0.07); color:var(--positive); border-bottom:1px solid rgba(30,143,92,0.15); }
+  .pros-cons-header.negative { background:rgba(201,59,59,0.06); color:var(--negative); border-bottom:1px solid rgba(201,59,59,0.12); }
+  .pros-cons-list { list-style:none; padding:16px 20px; display:flex; flex-direction:column; gap:10px; }
+  .pros-cons-list li { font-size:13px; color:var(--gray-dark); line-height:1.5; padding-left:18px; position:relative; }
+  .pros-cons-list li::before { position:absolute; left:0; font-weight:800; font-size:14px; line-height:1.5; }
+  .pros-cons-box.positive .pros-cons-list li::before { content:'+'; color:var(--positive); }
+  .pros-cons-box.negative .pros-cons-list li::before { content:'−'; color:var(--negative); }
+
+  /* COMPETITOR TABLE */
+  .competitor-table { width:100%; border-collapse:collapse; font-size:13px; margin-bottom:8px; }
+  .competitor-table thead tr { background:var(--black); }
+  .competitor-table thead td { color:rgba(255,255,255,0.6); font-size:10px; font-weight:600; letter-spacing:2px; text-transform:uppercase; padding:14px 16px; }
+  .competitor-table tbody tr { border-bottom:1px solid var(--border); }
+  .competitor-table tbody tr.highlight { background:var(--blue-pale); border-left:3px solid var(--blue); }
+  .competitor-table tbody tr.highlight td:first-child { padding-left:13px; }
+  .competitor-table tbody td { padding:15px 16px; color:var(--gray-dark); vertical-align:middle; }
+  .competitor-table tbody td:first-child { font-weight:600; color:var(--black); }
+  .comp-score { font-size:16px; font-weight:800; color:var(--blue); }
+  .comp-score.client { color:var(--black); }
+  .comp-bar-wrap { width:100px; height:8px; background:#E2E8F0; border-radius:4px; display:inline-block; vertical-align:middle; margin-left:12px; overflow:hidden; }
+  .comp-bar { display:block; height:8px; background:#2C75FF; border-radius:4px; }
+  .comp-bar.client { background:#000; }
+  .comp-tag { display:inline-block; font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:3px 10px; background:var(--blue-pale); color:var(--blue); margin-left:8px; }
+  .comp-active { display:inline-block; font-size:9px; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:2px 8px; background:rgba(201,59,59,0.1); color:var(--negative); margin-left:6px; }
+  .comp-notes { font-size:11px; color:var(--gray-mid); margin-top:3px; }
+
+  /* CALLOUT & HINWEIS */
+  .callout { background:var(--blue-pale); border-left:3px solid var(--blue); padding:16px 20px; font-size:13px; color:var(--gray-dark); line-height:1.6; margin-bottom:24px; }
+  .callout strong { color:var(--blue); font-weight:700; }
+  .hinweis { background:var(--warn-bg); border-left:3px solid var(--warn-border); padding:12px 18px; font-size:12px; color:var(--warn-text); line-height:1.5; margin-top:24px; }
+
+  /* JOURNEY */
+  .journey-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:24px; }
+  .journey-step { background:var(--gray-light); border:1px solid var(--border); padding:16px; text-align:center; position:relative; }
+  .journey-step::after { content:'›'; position:absolute; right:-10px; top:50%; transform:translateY(-50%); font-size:20px; color:var(--blue); font-weight:700; z-index:1; }
+  .journey-step:last-child::after { display:none; }
+  .journey-icon { font-size:20px; margin-bottom:8px; }
+  .journey-step-title { font-size:11px; font-weight:700; color:var(--black); margin-bottom:4px; }
+  .journey-step-text { font-size:11px; color:var(--gray-mid); line-height:1.4; }
+  .journey-highlight { border-top:3px solid var(--blue); }
+
+  /* FAZIT */
+  .section.fazit-section { background:linear-gradient(135deg,#2C75FF 0%,#2E97FF 100%) !important; }
+  .fazit-section { background:linear-gradient(135deg,#2C75FF 0%,#2E97FF 100%); padding:56px 64px; position:relative; overflow:hidden; }
+  .zi { position:relative; z-index:1; }
+  .fazit-label { font-size:10px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,0.5); margin-bottom:14px; position:relative; z-index:1; }
+  .fazit-title { font-size:32px; font-weight:800; color:#fff; letter-spacing:2px; text-transform:uppercase; margin-bottom:32px; line-height:1.1; position:relative; z-index:1; }
+  .fazit-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:24px; position:relative; z-index:1; }
+  .fazit-card { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.18); padding:24px; }
+  .fazit-card-label { font-size:9px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:rgba(255,255,255,0.5); margin-bottom:10px; }
+  .fazit-card-value { font-size:19px; font-weight:800; color:#fff; line-height:1.2; margin-bottom:8px; }
+  .fazit-card-sub { font-size:12px; color:rgba(255,255,255,0.65); line-height:1.55; }
+  .proof-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+  .proof-card { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.18); border-top:3px solid rgba(255,255,255,0.4); padding:18px 20px; }
+  .proof-region { font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,0.5); margin-bottom:8px; }
+  .proof-result { font-size:22px; font-weight:900; color:#fff; letter-spacing:-0.5px; margin-bottom:4px; }
+  .proof-detail { font-size:12px; color:rgba(255,255,255,0.65); line-height:1.4; }
+  .proof-meta { font-size:11px; color:rgba(255,255,255,0.4); margin-top:6px; }
+  .gap-bar-row { display:flex; align-items:center; gap:16px; margin-bottom:10px; }
+  .gap-bar-outer { flex:1; height:10px; background:rgba(255,255,255,0.15); border-radius:5px; }
+  .gap-bar-inner { height:100%; border-radius:5px; }
+  .fazit-score-block { background:rgba(0,0,0,0.25); border:1px solid rgba(255,255,255,0.15); padding:28px 36px; display:flex; align-items:center; justify-content:space-between; position:relative; z-index:1; gap:32px; }
+  .fazit-score-label { font-size:9px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:rgba(255,255,255,0.5); margin-bottom:8px; }
+  .fazit-score-number { font-size:68px; font-weight:900; color:#fff; letter-spacing:-4px; line-height:1; }
+  .fazit-score-number span { font-size:28px; font-weight:400; opacity:0.4; }
+  .fazit-score-desc { font-size:14px; color:rgba(255,255,255,0.75); max-width:360px; line-height:1.65; text-align:right; }
+
+  /* FOOTER */
+  .footer { background:var(--black); padding:26px 64px; display:flex; justify-content:space-between; align-items:center; }
+  .footer-logo img { height:22px; display:block; opacity:0.85; }
+  .footer-legal { font-size:11px; color:rgba(255,255,255,0.3); }
+
+  @media print { body { background:white; } .page { width:100%; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ══ COVER ══════════════════════════════════════════════════════════════ -->
+<div class="section cover">
+  <div class="cover-logo">
+    <img src="https://raw.githubusercontent.com/pb-adpleo/Marktpotentialanalyse-Template/refs/heads/main/logo_white.png" alt="adpleo">
+  </div>
+  <div class="cover-body">
+    <div class="cover-label">Marktpotenzialanalyse · Vertraulich</div>
+    <div class="cover-title">[KUNDENNAME]</div>
+    <div class="cover-subtitle">[STELLENPROFIL] · [BUNDESLAND]</div>
+  </div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><div class="cover-meta-label">Erstellt am</div><div class="cover-meta-value">[DATUM]</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">Einzugsgebiet</div><div class="cover-meta-value">[RADIUS] km Radius</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">Analysiert von</div><div class="cover-meta-value">Adpleo GmbH</div></div>
+  </div>
+</div>
+
+<!-- ══ SÄULE 01: REGIONSANALYSE ════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">Säule 01 von 03</div>
+    <div class="section-title">Regions<span>analyse</span></div>
+    <div class="section-divider"></div>
+  </div>
+  <div class="section-body">
+
+    <p class="intro-text">
+      Wie groß ist das tatsächliche Bewerberpotenzial für <strong>[STELLENPROFIL]</strong> im Einzugsgebiet von <strong>[RADIUS] km</strong> um [ORT] – und wie entwickelt sich dieser Pool in den nächsten Jahren?
+    </p>
+
+    <!-- Marktgröße -->
+    <div class="subsection-title">Marktgröße &amp; Potenzial</div>
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-value">[EINWOHNER]</div>
+        <div class="stat-label">Einwohner im Einzugsgebiet</div>
+        <div class="stat-sub">Radius: [RADIUS] km um [ORT]</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">[FACHKRÄFTE]</div>
+        <div class="stat-label">[STELLENPROFIL] in der Region</div>
+        <div class="stat-sub">[QUELLE]</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">[WECHSELBEREIT]</div>
+        <div class="stat-label">Davon latent wechselbereit</div>
+        <div class="stat-sub">Branchenquote: [X] %</div>
+      </div>
+    </div>
+    <table class="info-table">
+      <tr><td>Bundesland</td><td>[BUNDESLAND]</td></tr>
+      <tr><td>Standort</td><td>[ORT], [LANDKREIS]</td></tr>
+      <tr><td>Analyseradius</td><td>[RADIUS] km</td></tr>
+      <tr><td>Wichtigste Einzugsgebiete</td><td>[STADT 1], [STADT 2], [STADT 3], [STADT 4]</td></tr>
+      <tr><td>Marktlage Fachkräfte</td><td>[Z.B.: Stark angespannt – Nachfrage übersteigt Angebot deutlich]</td></tr>
+      <tr><td>Ansprache-Plattform</td><td>[Z.B.: Meta (Instagram &amp; Facebook) – hohe Erreichbarkeit der Zielgruppe 25–50 J.]</td></tr>
+    </table>
+
+    <!-- Trendlinie -->
+    <div class="subsection-title">Trendlinie – Wie entwickelt sich der Fachkräftemarkt?</div>
+    <div style="background:var(--gray-light);border:1px solid var(--border);padding:20px 24px;margin-bottom:24px;">
+      <div style="font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray-mid);margin-bottom:12px;">Verfügbarkeit von [STELLENPROFIL] im 3-Jahres-Horizont ([JAHR]–[JAHR+3])</div>
+      <div style="position:relative;height:8px;background:var(--border);border-radius:4px;margin-bottom:8px;">
+        <div style="height:100%;border-radius:4px;background:linear-gradient(90deg,#1E8F5C 0%,#E6A817 55%,#C93B3B 100%);"></div>
+        <div style="position:absolute;top:-4px;left:72%;width:16px;height:16px;border-radius:50%;background:var(--black);border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,0.3);transform:translateX(-50%);"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--gray-mid);font-weight:500;margin-bottom:10px;">
+        <span>Entspannt</span><span>Ausgeglichen</span><span>Angespannt</span><span>Kritisch</span>
+      </div>
+      <div style="font-size:12px;color:var(--gray-dark);line-height:1.6;">[TRENDANALYSE: Beschreibung der Entwicklung des Fachkräftepools in der Region. Renteneintritte, Ausbildungsnachwuchs, Prognose.]</div>
+    </div>
+
+    <!-- Kosten -->
+    <div class="subsection-title">Was kostet eine unbesetzte Stelle?</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:8px;">
+      <div style="background:var(--gray-light);border:1px solid var(--border);border-left:3px solid var(--negative);padding:18px 20px;">
+        <div style="font-size:26px;font-weight:900;color:var(--negative);letter-spacing:-1px;line-height:1;margin-bottom:6px;">[X.XXX] €</div>
+        <div style="font-size:12px;color:var(--gray-mid);line-height:1.4;font-weight:500;">Monatliche Mehrkosten durch Zeitarbeit &amp; Überstunden</div>
+        <div style="font-size:11px;color:var(--gray-mid);margin-top:4px;">Pro unbesetzter Stelle, Branchendurchschnitt [BRANCHE]</div>
+      </div>
+      <div style="background:var(--gray-light);border:1px solid var(--border);border-left:3px solid var(--negative);padding:18px 20px;">
+        <div style="font-size:26px;font-weight:900;color:var(--negative);letter-spacing:-1px;line-height:1;margin-bottom:6px;">[X.XXX–X.XXX] €</div>
+        <div style="font-size:12px;color:var(--gray-mid);line-height:1.4;font-weight:500;">Direkte Besetzungskosten klassischer Methoden</div>
+        <div style="font-size:11px;color:var(--gray-mid);margin-top:4px;">Headhunter, Jobbörsen, interne HR-Aufwände</div>
+      </div>
+      <div style="background:var(--gray-light);border:1px solid var(--border);border-left:3px solid var(--negative);padding:18px 20px;">
+        <div style="font-size:26px;font-weight:900;color:var(--negative);letter-spacing:-1px;line-height:1;margin-bottom:6px;">[X,X] Monate</div>
+        <div style="font-size:12px;color:var(--gray-mid);line-height:1.4;font-weight:500;">Ø Vakanzzeit Pflegefachkraft in BW</div>
+        <div style="font-size:11px;color:var(--gray-mid);margin-top:4px;">Quelle: Bundesagentur für Arbeit, Regionalwert [JAHR]</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ SÄULE 02: ARBEITGEBERANALYSE ═══════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">Säule 02 von 03</div>
+    <div class="section-title">Arbeitgeber<span>analyse</span></div>
+    <div class="section-divider"></div>
+  </div>
+  <div class="section-body">
+
+    <p class="intro-text">
+      Wie attraktiv wirkt das <strong>[KUNDENNAME]</strong> auf eine Pflegefachkraft, die sich heute online über potenzielle Arbeitgeber informiert?
+    </p>
+
+    <div class="subsection-title">Arbeitgeber-Scoring</div>
+    <div class="scoring-grid">
+      <div class="score-item">
+        <div class="score-item-top"><div class="score-row-label">Website &amp; Karriereseite</div><div class="score-right"><div class="score-bar-wrap"><div class="score-bar" style="width:[W1*10]%"></div></div><div class="score-badge">[S1]</div></div></div>
+        <div class="score-note">[BEGRÜNDUNG Website &amp; Karriereseite]</div>
+      </div>
+      <div class="score-item">
+        <div class="score-item-top"><div class="score-row-label">Kununu-Bewertung</div><div class="score-right"><div class="score-bar-wrap"><div class="score-bar" style="width:[W2*10]%"></div></div><div class="score-badge">[S2]</div></div></div>
+        <div class="score-note">[BEGRÜNDUNG Kununu]</div>
+      </div>
+      <div class="score-item">
+        <div class="score-item-top"><div class="score-row-label">Google-Bewertungen als Arbeitgeber</div><div class="score-right"><div class="score-bar-wrap"><div class="score-bar" style="width:[W3*10]%"></div></div><div class="score-badge">[S3]</div></div></div>
+        <div class="score-note">[BEGRÜNDUNG Google-Bewertungen]</div>
+      </div>
+      <div class="score-item">
+        <div class="score-item-top"><div class="score-row-label">Social-Media-Präsenz</div><div class="score-right"><div class="score-bar-wrap"><div class="score-bar" style="width:[W4*10]%"></div></div><div class="score-badge">[S4]</div></div></div>
+        <div class="score-note">[BEGRÜNDUNG Social Media]</div>
+      </div>
+      <div class="score-item">
+        <div class="score-item-top"><div class="score-row-label">Benefits &amp; Zusatzleistungen</div><div class="score-right"><div class="score-bar-wrap"><div class="score-bar" style="width:[W5*10]%"></div></div><div class="score-badge">[S5]</div></div></div>
+        <div class="score-note">[BEGRÜNDUNG Benefits]</div>
+      </div>
+      <div class="score-item">
+        <div class="score-item-top"><div class="score-row-label">Presse &amp; regionale Sichtbarkeit</div><div class="score-right"><div class="score-bar-wrap"><div class="score-bar" style="width:[W6*10]%"></div></div><div class="score-badge">[S6]</div></div></div>
+        <div class="score-note">[BEGRÜNDUNG Presse &amp; Sichtbarkeit]</div>
+      </div>
+    </div>
+
+    <div class="total-score-bar">
+      <div><div class="total-score-label">Arbeitgeberscore</div><div class="total-score-value">[GESAMT_SCORE]<span> / 10</span></div></div>
+      <div class="total-score-desc">[KURZE GESAMTBEWERTUNG – Stärken und Kernproblem]</div>
+    </div>
+
+    <div class="pros-cons-grid">
+      <div class="pros-cons-box positive">
+        <div class="pros-cons-header positive">Stärken</div>
+        <ul class="pros-cons-list">
+          <li>[STÄRKE 1]</li>
+          <li>[STÄRKE 2]</li>
+          <li>[STÄRKE 3]</li>
+          <li>[STÄRKE 4]</li>
+        </ul>
+      </div>
+      <div class="pros-cons-box negative">
+        <div class="pros-cons-header negative">Schwächen</div>
+        <ul class="pros-cons-list">
+          <li>[SCHWÄCHE 1]</li>
+          <li>[SCHWÄCHE 2]</li>
+          <li>[SCHWÄCHE 3]</li>
+          <li>[SCHWÄCHE 4]</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="subsection-title" style="margin-top:32px;">Quick Wins – So steigt der Score am schnellsten</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+
+      <div style="background:var(--gray-light);border:1px solid var(--border);border-left:3px solid var(--blue);padding:16px 18px;display:flex;gap:14px;align-items:flex-start;">
+        <div style="font-size:22px;line-height:1;flex-shrink:0;">[ICON 1]</div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--black);margin-bottom:3px;">[QUICK WIN 1 TITEL]</div>
+          <div style="font-size:11px;color:var(--gray-mid);line-height:1.5;">[BEGRÜNDUNG: Aktueller Kununu-Stand des Kunden + konkreter Handlungsimpuls]</div>
+        </div>
+      </div>
+
+      <div style="background:var(--gray-light);border:1px solid var(--border);border-left:3px solid var(--blue);padding:16px 18px;display:flex;gap:14px;align-items:flex-start;">
+        <div style="font-size:22px;line-height:1;flex-shrink:0;">[ICON 2]</div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--black);margin-bottom:3px;">[QUICK WIN 2 TITEL]</div>
+          <div style="font-size:11px;color:var(--gray-mid);line-height:1.5;">[BEGRÜNDUNG: Aktueller Google-Profil-Stand des Kunden + konkreter Handlungsimpuls]</div>
+        </div>
+      </div>
+
+      <div style="background:var(--gray-light);border:1px solid var(--border);border-left:3px solid var(--blue);padding:16px 18px;display:flex;gap:14px;align-items:flex-start;">
+        <div style="font-size:22px;line-height:1;flex-shrink:0;">[ICON 3]</div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--black);margin-bottom:3px;">[QUICK WIN 3 TITEL]</div>
+          <div style="font-size:11px;color:var(--gray-mid);line-height:1.5;">[BEGRÜNDUNG: Welche Benefits sind vorhanden aber unsichtbar?]</div>
+        </div>
+      </div>
+
+      <div style="background:var(--gray-light);border:1px solid var(--border);border-left:3px solid var(--blue);padding:16px 18px;display:flex;gap:14px;align-items:flex-start;">
+        <div style="font-size:22px;line-height:1;flex-shrink:0;">[ICON 4]</div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--black);margin-bottom:3px;">[QUICK WIN 4 TITEL]</div>
+          <div style="font-size:11px;color:var(--gray-mid);line-height:1.5;">[BEGRÜNDUNG: Aktueller Stand der visuellen Präsenz]</div>
+        </div>
+      </div>
+
+    </div>
+    <div style="background:var(--blue-pale);border-left:3px solid var(--blue);padding:11px 16px;font-size:12px;color:var(--gray-dark);line-height:1.5;">
+      <strong style="color:var(--blue);">Potenzial:</strong> [BESCHREIBUNG DES VERBESSERUNGSPOTENZIALS durch die Quick Wins – Score vorher/nachher, erwartete Wirkung]
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ SÄULE 03: WETTBEWERBSANALYSE ═══════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">Säule 03 von 03</div>
+    <div class="section-title">Wettbewerbs<span>analyse</span></div>
+    <div class="section-divider"></div>
+  </div>
+  <div class="section-body">
+
+    <p class="intro-text">
+      Welche anderen Arbeitgeber konkurrieren im Einzugsgebiet um dieselben [STELLENPROFIL] – und wer davon ist gerade aktiv am Rekrutieren?
+    </p>
+
+    <div class="callout">
+      <strong>Wichtig:</strong> Als Wettbewerber gelten nicht nur andere Altenpflegeheime – sondern alle Arbeitgeber, die <strong>[STELLENPROFIL]</strong> einstellen: <strong>[EINRICHTUNGSTYP 1], [EINRICHTUNGSTYP 2], [EINRICHTUNGSTYP 3]</strong> im gesamten 50-km-Radius.
+    </div>
+
+    <div style="display:flex; align-items:center; gap:24px; margin-bottom:16px; font-size:12px; color:var(--gray-mid);">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;background:var(--blue-pale);color:var(--blue);">Ihr Unternehmen</span>
+        <span>Analysierter Arbeitgeber</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;background:rgba(201,59,59,0.1);color:#C93B3B;">Aktiv am Markt</span>
+        <span>Aktuell laufende Stellenanzeigen oder Social-Recruiting-Ads nachweisbar (Stand [DATUM])</span>
+      </div>
+    </div>
+    <table class="competitor-table">
+      <thead><tr><td>Einrichtung</td><td>Typ</td><td>Entfernung</td><td>Score</td><td>Stärke</td></tr></thead>
+      <tbody>
+        <tr class="highlight">
+          <td>[KUNDENNAME] <span class="comp-tag">Ihr Unternehmen</span></td>
+          <td>[EINRICHTUNGSTYP]</td><td>–</td>
+          <td><span class="comp-score client">[SCORE]</span></td>
+          <td><span class="comp-bar-wrap"><span class="comp-bar client" style="width:[SCORE*10]%"></span></span></td>
+        </tr>
+        <tr>
+          <td>[WETTBEWERBER 1] <span class="comp-active">Aktiv am Markt</span><div class="comp-notes">[KURZE EINSCHÄTZUNG]</div></td>
+          <td>[EINRICHTUNGSTYP]</td><td>[X] km</td>
+          <td><span class="comp-score">[X.X]</span></td>
+          <td><span class="comp-bar-wrap"><span class="comp-bar" style="width:[X*10]%"></span></span></td>
+        </tr>
+        <tr>
+          <td>[WETTBEWERBER 2] <span class="comp-active">Aktiv am Markt</span><div class="comp-notes">[KURZE EINSCHÄTZUNG]</div></td>
+          <td>[EINRICHTUNGSTYP]</td><td>[X] km</td>
+          <td><span class="comp-score">[X.X]</span></td>
+          <td><span class="comp-bar-wrap"><span class="comp-bar" style="width:[X*10]%"></span></span></td>
+        </tr>
+        <tr>
+          <td>[WETTBEWERBER 3]<div class="comp-notes">[KURZE EINSCHÄTZUNG]</div></td>
+          <td>[EINRICHTUNGSTYP]</td><td>[X] km</td>
+          <td><span class="comp-score">[X.X]</span></td>
+          <td><span class="comp-bar-wrap"><span class="comp-bar" style="width:[W5*10]%"></span></span></td>
+        </tr>
+        <tr>
+          <td>[WETTBEWERBER 4]<div class="comp-notes">[KURZE EINSCHÄTZUNG]</div></td>
+          <td>[EINRICHTUNGSTYP]</td><td>[X] km</td>
+          <td><span class="comp-score">[X.X]</span></td>
+          <td><span class="comp-bar-wrap"><span class="comp-bar" style="width:[X*10]%"></span></span></td>
+        </tr>
+        <tr>
+          <td>[WETTBEWERBER 5]<div class="comp-notes">[KURZE EINSCHÄTZUNG]</div></td>
+          <td>[EINRICHTUNGSTYP]</td><td>[X] km</td>
+          <td><span class="comp-score">[X.X]</span></td>
+          <td><span class="comp-bar-wrap"><span class="comp-bar" style="width:[W6*10]%"></span></span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="height:24px;"></div>
+
+    <div class="pros-cons-grid">
+      <div class="pros-cons-box positive">
+        <div class="pros-cons-header positive">Vorteile gegenüber Wettbewerb</div>
+        <ul class="pros-cons-list">
+          <li>[VORTEIL 1]</li>
+          <li>[VORTEIL 2]</li>
+          <li>[VORTEIL 3]</li>
+        </ul>
+      </div>
+      <div class="pros-cons-box negative">
+        <div class="pros-cons-header negative">Nachteile gegenüber Wettbewerb</div>
+        <ul class="pros-cons-list">
+          <li>[NACHTEIL 1]</li>
+          <li>[NACHTEIL 2]</li>
+          <li>[NACHTEIL 3]</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="hinweis">
+      <strong>Hinweis zur Datengrundlage:</strong> Wettbewerber-Scores basieren auf öffentlich zugänglichen Quellen (Karriereseiten, Bewertungsportale, Social Media). Markierungen „Aktiv am Markt" basieren auf aktuell laufenden Stellenanzeigen (Stand [DATUM]).
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ REFERENZPROJEKTE ══════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">Referenzprojekte</div>
+    <div class="section-title">Das haben wir bereits<br><span>erreicht</span></div>
+    <div class="section-divider"></div>
+  </div>
+  <div class="section-body">
+
+    <p class="intro-text">
+      Die folgenden Projekte zeigen, was mit gezieltem Social Recruiting im Pflege- und Sozialbereich möglich ist – auch in Regionen mit angespanntem Fachkräftemarkt.
+    </p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:20px;">
+
+      <div style="background:var(--gray-light);border:1px solid var(--border);border-top:4px solid var(--positive);padding:28px 24px;display:flex;flex-direction:column;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray-mid);margin-bottom:10px;min-height:28px;display:flex;align-items:center;">[BRANCHE] · [REGION]</div>
+        <div style="font-size:18px;font-weight:800;color:var(--black);line-height:1.3;min-height:50px;display:flex;align-items:flex-start;">[EINRICHTUNG 1]</div>
+        <div style="font-size:52px;font-weight:900;color:var(--positive);letter-spacing:-3px;line-height:1;margin-top:16px;">[ZAHL]</div>
+        <div style="font-size:13px;font-weight:600;color:var(--gray-dark);margin-top:4px;margin-bottom:0;min-height:24px;">[Z.B.: Einstellungen gesamt]</div>
+        <div style="font-size:13px;color:var(--gray-dark);line-height:1.7;border-top:1px solid var(--border);padding-top:14px;margin-top:16px;">
+          [DETAILS ZUR EINSTELLUNG: Stellenprofil, Zeitraum, Besonderheiten]
+        </div>
+      </div>
+
+      <div style="background:var(--gray-light);border:1px solid var(--border);border-top:4px solid var(--positive);padding:28px 24px;display:flex;flex-direction:column;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray-mid);margin-bottom:10px;min-height:28px;display:flex;align-items:center;">[BRANCHE] · [REGION]</div>
+        <div style="font-size:18px;font-weight:800;color:var(--black);line-height:1.3;min-height:50px;display:flex;align-items:flex-start;">[EINRICHTUNG 2]</div>
+        <div style="font-size:52px;font-weight:900;color:var(--positive);letter-spacing:-3px;line-height:1;margin-top:16px;">[ZAHL]</div>
+        <div style="font-size:13px;font-weight:600;color:var(--gray-dark);margin-top:4px;margin-bottom:0;min-height:24px;">[Z.B.: Einstellungen gesamt]</div>
+        <div style="font-size:13px;color:var(--gray-dark);line-height:1.7;border-top:1px solid var(--border);padding-top:14px;margin-top:16px;">
+          [DETAILS ZUR EINSTELLUNG: Stellenprofil, Zeitraum, Besonderheiten]
+        </div>
+      </div>
+
+      <div style="background:var(--gray-light);border:1px solid var(--border);border-top:4px solid var(--positive);padding:28px 24px;display:flex;flex-direction:column;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray-mid);margin-bottom:10px;min-height:28px;display:flex;align-items:center;">[BRANCHE] · [REGION]</div>
+        <div style="font-size:18px;font-weight:800;color:var(--black);line-height:1.3;min-height:50px;display:flex;align-items:flex-start;">[EINRICHTUNG 3]</div>
+        <div style="font-size:52px;font-weight:900;color:var(--positive);letter-spacing:-3px;line-height:1;margin-top:16px;">[ZAHL]</div>
+        <div style="font-size:13px;font-weight:600;color:var(--gray-dark);margin-top:4px;margin-bottom:0;min-height:24px;">[Z.B.: Einstellungen gesamt]</div>
+        <div style="font-size:13px;color:var(--gray-dark);line-height:1.7;border-top:1px solid var(--border);padding-top:14px;margin-top:16px;">
+          [DETAILS ZUR EINSTELLUNG: Stellenprofil, Zeitraum, Besonderheiten]
+        </div>
+      </div>
+
+    </div>
+
+    <div class="callout">
+      <strong>Hinweis:</strong> Die oben genannten Ergebnisse beziehen sich auf abgeschlossene Kampagnen mit Adpleo. Die Ergebnisse variieren je nach Region, Stellenprofil und Arbeitgeberstärke – bilden aber eine realistische Grundlage für die Einschätzung des Potenzials.
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ FAZIT ════════════════════════════════════════════════════════════════ -->
+<div class="section fazit-section">
+
+  <div class="fazit-label zi">Zusammenfassung</div>
+  <div class="fazit-title zi">Gesamteinschätzung &amp;<br>Einstellungspotenzial</div>
+
+  <div class="fazit-grid zi">
+    <div class="fazit-card"><div class="fazit-card-label">Wahrgenommene Attraktivität</div><div class="fazit-card-value">[Z.B.: Unterschätzt – Substanz vorhanden]</div><div class="fazit-card-sub">[KURZE EINSCHÄTZUNG zur wahrgenommenen Attraktivität]</div></div>
+    <div class="fazit-card"><div class="fazit-card-label">Wettbewerbsposition</div><div class="fazit-card-value">[Z.B.: Platz X von 6 im Markt]</div><div class="fazit-card-sub">[KURZE EINSCHÄTZUNG zur Wettbewerbsposition]</div></div>
+    <div class="fazit-card"><div class="fazit-card-label">Bewerberpotenzial</div><div class="fazit-card-value">Gut – [WECHSELBEREIT] erreichbare Fachkräfte</div><div class="fazit-card-sub">[EINSCHÄTZUNG zum Bewerberpotenzial auf Basis der Regionsanalyse]</div></div>
+    <div class="fazit-card"><div class="fazit-card-label">Kampagnenerfolg</div><div class="fazit-card-value">[Z.B.: Realistisch – historisch vergleichbar]</div><div class="fazit-card-sub">[EINSCHÄTZUNG zum Kampagnenpotenzial auf Basis vergleichbarer Projekte]</div></div>
+  </div>
+
+    <div class="zi" style="margin-bottom:24px;position:relative;z-index:1;">
+    <div style="font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:14px;">Einstellungsziel</div>
+    <div style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);padding:24px;">
+      <div class="gap-bar-row">
+        <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.7);width:160px;flex-shrink:0;">Gesamtbedarf</div>
+        <div class="gap-bar-outer"><div class="gap-bar-inner" style="width:100%;background:rgba(255,255,255,0.3);"></div></div>
+        <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.8);width:80px;text-align:right;">[GESAMT] Stellen</div>
+      </div>
+      <div class="gap-bar-row">
+        <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.7);width:160px;flex-shrink:0;">Davon aktuell offen</div>
+        <div class="gap-bar-outer"><div class="gap-bar-inner" style="width:[OFFEN_PCT]%;background:rgba(255,255,255,0.3);"></div></div>
+        <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.8);width:80px;text-align:right;">[OFFEN] Stellen</div>
+      </div>
+      <div class="gap-bar-row">
+        <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.7);width:160px;flex-shrink:0;">Mit Kampagne füllbar</div>
+        <div class="gap-bar-outer"><div class="gap-bar-inner" style="width:[KAMPAGNE_PCT]%;background:#1E8F5C;"></div></div>
+        <div style="font-size:12px;font-weight:700;color:#1E8F5C;width:80px;text-align:right;">[KAMPAGNE] Stellen</div>
+      </div>
+    </div>
+  </div>
+
+<div class="zi" style="margin-bottom:32px;position:relative;z-index:1;">
+    <div style="background:rgba(230,168,23,0.15);border:1px solid rgba(230,168,23,0.4);padding:20px 24px;">
+      <div style="font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(230,168,23,0.9);margin-bottom:8px;">⚠ Warum jetzt?</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.82);line-height:1.6;">[FENSTER-ARGUMENT: Warum ist jetzt der richtige Zeitpunkt? Saisonalität, Wechselbereitschaft, aktive Wettbewerber, Marktentwicklung.]</div>
+    </div>
+  </div>
+
+  <div class="fazit-score-block" style="position:relative;z-index:1;">
+    <div><div class="fazit-score-label">Gesamtscore</div><div class="fazit-score-number">[GESAMTSCORE]<span> / 10</span></div></div>
+    <div class="fazit-score-desc">[ABSCHLUSSFORMULIERUNG: 2–3 Sätze. Gesamtbewertung auf Basis aller drei Säulen. Überleitung zur Einstellungsgarantie, die mündlich ausgesprochen wird.]</div>
+  </div>
+
+</div>
+
+<!-- ══ FOOTER ════════════════════════════════════════════════════════════════ -->
+<div class="footer">
+  <div class="footer-logo"><img src="https://raw.githubusercontent.com/pb-adpleo/Marktpotentialanalyse-Template/refs/heads/main/logo_white.png" alt="adpleo"></div>
+  <div class="footer-legal">Vertraulich · Erstellt für interne und Kundenzwecke · [DATUM]</div>
+</div>
+
+</div>
+</body>
+</html>
