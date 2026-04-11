@@ -158,6 +158,63 @@
   .footer-legal { font-size:11px; color:rgba(255,255,255,0.3); }
 
   @media print { body { background:white; } .page { width:100%; } }
+
+  /* EDIT MODE */
+  .edit-toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    background: #000;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  }
+  .edit-toolbar span {
+    color: rgba(255,255,255,0.5);
+    font-size: 12px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin-right: auto;
+  }
+  .edit-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 3px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    letter-spacing: 0.5px;
+  }
+  .edit-btn-toggle {
+    background: #2C75FF;
+    color: white;
+  }
+  .edit-btn-save {
+    background: #1E8F5C;
+    color: white;
+  }
+  .edit-btn-cancel {
+    background: rgba(255,255,255,0.1);
+    color: white;
+  }
+  body.edit-active [contenteditable="true"] {
+    outline: 2px dashed rgba(44,117,255,0.5);
+    border-radius: 2px;
+    cursor: text;
+    min-height: 1em;
+  }
+  body.edit-active [contenteditable="true"]:focus {
+    outline: 2px solid #2C75FF;
+    background: rgba(44,117,255,0.05);
+  }
+  body.has-toolbar {
+    padding-top: 52px;
+  }
+
 </style>
 </head>
 <body>
@@ -600,6 +657,122 @@ document.addEventListener('DOMContentLoaded', function() {
   tbody.innerHTML = '';
   highlightRows.forEach(r => tbody.appendChild(r));
   competitorRows.forEach(r => tbody.appendChild(r));
+});
+</script>
+
+
+<script>
+// ── Edit Mode ──────────────────────────────────────────────────────────────
+const EDITABLE_SELECTORS = [
+  '.cover-title',
+  '.cover-subtitle',
+  '.cover-meta-value',
+  '.cover-label',
+  '.section-title',
+  '.intro-text',
+  '.subsection-title',
+  '.stat-value',
+  '.stat-label',
+  '.stat-sub',
+  '.info-table td',
+  '.score-row-label',
+  '.score-badge',
+  '.score-note',
+  '.total-score-value',
+  '.total-score-desc',
+  '.pros-cons-list li',
+  '.pros-cons-header',
+  '.comp-notes',
+  '.comp-score',
+  '.callout',
+  '.hinweis',
+  '.fazit-label',
+  '.fazit-title',
+  '.fazit-card-label',
+  '.fazit-card-value',
+  '.fazit-card-sub',
+  '.fazit-score-number',
+  '.fazit-score-desc',
+  '.footer-legal',
+  '.proof-region',
+  '.proof-result',
+  '.proof-detail',
+  '.proof-meta',
+  '[style*="gap-bar"]',
+  '.journey-step-title',
+  '.journey-step-text',
+];
+
+let editMode = false;
+
+function enableEdit() {
+  editMode = true;
+  document.body.classList.add('edit-active');
+  document.querySelectorAll(EDITABLE_SELECTORS.join(',')).forEach(el => {
+    el.contentEditable = 'true';
+    el.spellcheck = false;
+  });
+  document.getElementById('edit-toggle-btn').textContent = '✏️ Bearbeitung aktiv';
+  document.getElementById('edit-toggle-btn').classList.remove('edit-btn-toggle');
+  document.getElementById('edit-toggle-btn').style.background = '#555';
+  document.getElementById('save-btn').style.display = 'inline-block';
+  document.getElementById('cancel-btn').style.display = 'inline-block';
+}
+
+function disableEdit() {
+  editMode = false;
+  document.body.classList.remove('edit-active');
+  document.querySelectorAll('[contenteditable]').forEach(el => {
+    el.removeAttribute('contenteditable');
+  });
+  document.getElementById('edit-toggle-btn').textContent = '✏️ Bearbeiten';
+  document.getElementById('edit-toggle-btn').classList.add('edit-btn-toggle');
+  document.getElementById('edit-toggle-btn').style.background = '';
+  document.getElementById('save-btn').style.display = 'none';
+  document.getElementById('cancel-btn').style.display = 'none';
+}
+
+function saveHTML() {
+  // Disable edit mode temporarily for clean export
+  disableEdit();
+  
+  // Remove toolbar from exported HTML
+  const toolbar = document.getElementById('edit-toolbar');
+  toolbar.style.display = 'none';
+  document.body.classList.remove('has-toolbar');
+
+  const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+  
+  // Restore toolbar
+  toolbar.style.display = 'flex';
+  document.body.classList.add('has-toolbar');
+
+  const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  
+  // Generate filename with customer name
+  const titleEl = document.querySelector('.cover-title');
+  const customerName = titleEl ? titleEl.textContent.trim().replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_\-äöüÄÖÜß]/g, '') : 'Report';
+  a.download = 'Marktpotenzialanalyse_' + customerName + '.html';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// Init toolbar
+document.addEventListener('DOMContentLoaded', function() {
+  const toolbar = document.createElement('div');
+  toolbar.id = 'edit-toolbar';
+  toolbar.className = 'edit-toolbar';
+  toolbar.innerHTML = `
+    <span>Adpleo · Marktpotenzialanalyse</span>
+    <button id="cancel-btn" class="edit-btn edit-btn-cancel" style="display:none" onclick="disableEdit()">Abbrechen</button>
+    <button id="save-btn" class="edit-btn edit-btn-save" style="display:none" onclick="saveHTML()">⬇ Speichern & Herunterladen</button>
+    <button id="edit-toggle-btn" class="edit-btn edit-btn-toggle" onclick="enableEdit()">✏️ Bearbeiten</button>
+  `;
+  document.body.prepend(toolbar);
+  document.body.classList.add('has-toolbar');
 });
 </script>
 
