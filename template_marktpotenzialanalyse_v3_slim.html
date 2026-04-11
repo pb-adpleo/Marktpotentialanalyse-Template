@@ -478,14 +478,14 @@
       Die folgenden Projekte zeigen, was mit gezieltem Social Recruiting im Pflege- und Sozialbereich möglich ist – auch in Regionen mit angespanntem Fachkräftemarkt.
     </p>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:20px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:20px;align-items:stretch;">
 
       <div style="background:var(--gray-light);border:1px solid var(--border);border-top:4px solid var(--positive);padding:28px 24px;display:flex;flex-direction:column;">
         <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray-mid);margin-bottom:10px;min-height:28px;display:flex;align-items:center;">[BRANCHE] · [REGION]</div>
         <div style="font-size:18px;font-weight:800;color:var(--black);line-height:1.3;min-height:50px;display:flex;align-items:flex-start;">[EINRICHTUNG 1]</div>
         <div style="font-size:52px;font-weight:900;color:var(--positive);letter-spacing:-3px;line-height:1;margin-top:16px;">[ZAHL]</div>
-        <div style="font-size:13px;font-weight:600;color:var(--gray-dark);margin-top:4px;margin-bottom:0;min-height:24px;">[Z.B.: Einstellungen gesamt]</div>
-        <div style="font-size:13px;color:var(--gray-dark);line-height:1.7;border-top:1px solid var(--border);padding-top:14px;margin-top:16px;">
+        <div style="font-size:13px;font-weight:600;color:var(--gray-dark);margin-top:4px;min-height:24px;">[Z.B.: Einstellungen gesamt]</div>
+        <div style="font-size:13px;color:var(--gray-dark);line-height:1.7;border-top:1px solid var(--border);padding-top:14px;margin-top:auto;">
           [DETAILS ZUR EINSTELLUNG: Stellenprofil, Zeitraum, Besonderheiten]
         </div>
       </div>
@@ -494,8 +494,8 @@
         <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray-mid);margin-bottom:10px;min-height:28px;display:flex;align-items:center;">[BRANCHE] · [REGION]</div>
         <div style="font-size:18px;font-weight:800;color:var(--black);line-height:1.3;min-height:50px;display:flex;align-items:flex-start;">[EINRICHTUNG 2]</div>
         <div style="font-size:52px;font-weight:900;color:var(--positive);letter-spacing:-3px;line-height:1;margin-top:16px;">[ZAHL]</div>
-        <div style="font-size:13px;font-weight:600;color:var(--gray-dark);margin-top:4px;margin-bottom:0;min-height:24px;">[Z.B.: Einstellungen gesamt]</div>
-        <div style="font-size:13px;color:var(--gray-dark);line-height:1.7;border-top:1px solid var(--border);padding-top:14px;margin-top:16px;">
+        <div style="font-size:13px;font-weight:600;color:var(--gray-dark);margin-top:4px;min-height:24px;">[Z.B.: Einstellungen gesamt]</div>
+        <div style="font-size:13px;color:var(--gray-dark);line-height:1.7;border-top:1px solid var(--border);padding-top:14px;margin-top:auto;">
           [DETAILS ZUR EINSTELLUNG: Stellenprofil, Zeitraum, Besonderheiten]
         </div>
       </div>
@@ -504,8 +504,8 @@
         <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray-mid);margin-bottom:10px;min-height:28px;display:flex;align-items:center;">[BRANCHE] · [REGION]</div>
         <div style="font-size:18px;font-weight:800;color:var(--black);line-height:1.3;min-height:50px;display:flex;align-items:flex-start;">[EINRICHTUNG 3]</div>
         <div style="font-size:52px;font-weight:900;color:var(--positive);letter-spacing:-3px;line-height:1;margin-top:16px;">[ZAHL]</div>
-        <div style="font-size:13px;font-weight:600;color:var(--gray-dark);margin-top:4px;margin-bottom:0;min-height:24px;">[Z.B.: Einstellungen gesamt]</div>
-        <div style="font-size:13px;color:var(--gray-dark);line-height:1.7;border-top:1px solid var(--border);padding-top:14px;margin-top:16px;">
+        <div style="font-size:13px;font-weight:600;color:var(--gray-dark);margin-top:4px;min-height:24px;">[Z.B.: Einstellungen gesamt]</div>
+        <div style="font-size:13px;color:var(--gray-dark);line-height:1.7;border-top:1px solid var(--border);padding-top:14px;margin-top:auto;">
           [DETAILS ZUR EINSTELLUNG: Stellenprofil, Zeitraum, Besonderheiten]
         </div>
       </div>
@@ -574,5 +574,34 @@
 </div>
 
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tbody = document.querySelector('.competitor-table tbody');
+  if (!tbody) return;
+
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+
+  // Separate highlight row (Ihr Unternehmen) from competitors
+  const highlightRows = rows.filter(r => r.classList.contains('highlight'));
+  const competitorRows = rows.filter(r => !r.classList.contains('highlight'));
+
+  // Sort competitors by score descending
+  competitorRows.sort((a, b) => {
+    const getScore = row => {
+      const scoreEl = row.querySelector('.comp-score');
+      if (!scoreEl) return 0;
+      return parseFloat(scoreEl.textContent.replace(',', '.')) || 0;
+    };
+    return getScore(b) - getScore(a);
+  });
+
+  // Rebuild tbody: highlight row first, then sorted competitors
+  tbody.innerHTML = '';
+  highlightRows.forEach(r => tbody.appendChild(r));
+  competitorRows.forEach(r => tbody.appendChild(r));
+});
+</script>
+
 </body>
 </html>
