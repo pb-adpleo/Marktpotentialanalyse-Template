@@ -1,0 +1,142 @@
+[
+  {
+    "firma": "Bürgerheim Villingen-Schwenningen",
+    "branche": "Stationäre Altenpflege",
+    "typ": "Pflege",
+    "region": "Baden-Württemberg",
+    "stelle": "Pflegefachkraft",
+    "einstellungen": "13",
+    "einstellungen_label": "Einstellungen gesamt",
+    "detail": "9 examinierte Pflegefachkräfte, 2 Pflegehilfskräfte, 1 Praxisanleitung. 8 Einstellungen innerhalb von 7 Wochen."
+  },
+  {
+    "firma": "Diakonie Krankenhaus Bremen",
+    "branche": "Klinik",
+    "typ": "Klinik",
+    "region": "Bremen",
+    "stelle": "Pflegefachkraft / Arzt",
+    "einstellungen": "17",
+    "einstellungen_label": "Einstellungen gesamt",
+    "detail": "15 examinierte Pflegefachkräfte + 2 Assistenzärzte. 10 PFK in 3 Monaten eingestellt."
+  },
+  {
+    "firma": "Lebenshilfe Tuttlingen",
+    "branche": "Inklusion / Behindertenhilfe",
+    "typ": "Soziales",
+    "region": "Baden-Württemberg",
+    "stelle": "Pflege- und Hilfskräfte",
+    "einstellungen": "11",
+    "einstellungen_label": "Einstellungen gesamt",
+    "detail": "2 examinierte Pflegefachkräfte + 6 Pflegehilfskräfte. 6 Hilfskräfte + 1 PFK in 3 Monaten."
+  },
+  {
+    "firma": "Martinswerk Nord",
+    "branche": "Kinder- und Jugendhilfe",
+    "typ": "Soziales",
+    "region": "Hamburg / Norddeutschland",
+    "stelle": "Schulbegleiter",
+    "einstellungen": "7",
+    "einstellungen_label": "Einstellungen gesamt",
+    "detail": "7 Schulbegleiter innerhalb von 3 Monaten eingestellt."
+  },
+  {
+    "firma": "Kloster Hegne",
+    "branche": "Stationäre Altenpflege",
+    "typ": "Pflege",
+    "region": "Baden-Württemberg",
+    "stelle": "Pflegefachkraft",
+    "einstellungen": "1",
+    "einstellungen_label": "Einstellung",
+    "detail": "Examinierte Pflegefachkraft. Direkt vergleichbarer Einrichtungstyp."
+  },
+  {
+    "firma": "Lebenshilfe Altmühlfranken e.V.",
+    "branche": "Inklusion / Behindertenhilfe",
+    "typ": "Soziales",
+    "region": "Bayern",
+    "stelle": "Fach- und Hilfskräfte",
+    "einstellungen": "3",
+    "einstellungen_label": "Einstellungen gesamt",
+    "detail": "3 Einstellungen in 3 Monaten."
+  },
+  {
+    "firma": "Diakonie Pfingstweid",
+    "branche": "Inklusion / Behindertenhilfe",
+    "typ": "Soziales",
+    "region": "Baden-Württemberg",
+    "stelle": "Heilerziehungspfleger / Fachkräfte",
+    "einstellungen": "2",
+    "einstellungen_label": "Einstellungen gesamt",
+    "detail": "2 Einstellungen in den ersten 2 Wochen."
+  },
+  {
+    "firma": "FamilyandCare",
+    "branche": "Kita",
+    "typ": "Kita / Bildung",
+    "region": "Deutschland",
+    "stelle": "Erzieher",
+    "einstellungen": "13",
+    "einstellungen_label": "Einstellungen gesamt",
+    "detail": "13 Erzieher in 6 Monaten eingestellt."
+  },
+  {
+    "firma": "Bruderhaus Diakonie",
+    "branche": "Komplexträger",
+    "typ": "Pflege / Soziales",
+    "region": "Baden-Württemberg",
+    "stelle": "Erzieher, Pflege- und Hilfskräfte, Leitung",
+    "einstellungen": "20+",
+    "einstellungen_label": "Einstellungen gesamt",
+    "detail": "Über 20 Einstellungen in 24 Kampagnen. Erzieher:innen, Hilfs- und Pflegefachkräfte, Bereichsleitung, stellv. Einrichtungsleitung, Auszubildende."
+  },
+  {
+    "firma": "Trägerwerk Soziale Dienste Sachsen",
+    "branche": "Jugendhilfe / Psychiatrie / Behindertenhilfe",
+    "typ": "Soziales",
+    "region": "Sachsen",
+    "stelle": "Betreuungsfachkräfte",
+    "einstellungen": "2",
+    "einstellungen_label": "Einstellungen gesamt",
+    "detail": "2 Einstellungen in 3 Monaten."
+  },
+  {
+    "firma": "Malteser Bodensee",
+    "branche": "Pflege / Rettungsdienst",
+    "typ": "Pflege",
+    "region": "Baden-Württemberg",
+    "stelle": "Fachkräfte",
+    "einstellungen": "10",
+    "einstellungen_label": "Einstellungen gesamt",
+    "detail": "10 Fachkräfte eingestellt."
+  },
+  {
+    "firma": "LWL Pflegezentrum Marsberg",
+    "branche": "Stationäre Pflege",
+    "typ": "Pflege",
+    "region": "Nordrhein-Westfalen",
+    "stelle": "Pflegefachkraft",
+    "einstellungen": "1",
+    "einstellungen_label": "Einstellung",
+    "detail": "1 Einstellung."
+  },
+  {
+    "firma": "Camino",
+    "branche": "Kita",
+    "typ": "Kita / Bildung",
+    "region": "Berlin",
+    "stelle": "Erzieher",
+    "einstellungen": "5+",
+    "einstellungen_label": "Einstellungen gesamt",
+    "detail": "Über 5 Erzieher eingestellt."
+  },
+  {
+    "firma": "Paritätischer Wohlfahrtsverband Niedersachsen",
+    "branche": "Komplexträger",
+    "typ": "Pflege / Soziales",
+    "region": "Niedersachsen",
+    "stelle": "PDL / Erzieher / Verwaltung / HEPs",
+    "einstellungen": "5",
+    "einstellungen_label": "Einstellungen gesamt",
+    "detail": "5 Einstellungen in Summe: PDL, Erzieher, Verwaltung, HEPs."
+  }
+]
