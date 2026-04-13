@@ -157,7 +157,13 @@
   .footer-logo img { height:22px; display:block; opacity:0.85; }
   .footer-legal { font-size:11px; color:rgba(255,255,255,0.3); }
 
-  @media print { body { background:white; } .page { width:100%; } }
+  @media print {
+    body { background:white; }
+    * { page-break-inside: avoid !important; page-break-before: avoid !important; page-break-after: avoid !important; }
+    html, body { height: auto !important; overflow: visible !important; }
+    .page { page-break-after: avoid !important; }
+  }
+  @page { size: auto; margin: 0; } .page { width:100%; } }
 </style>
 </head>
 <body>
